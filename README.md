@@ -1,21 +1,35 @@
 # Student Record Management System
 
-A simple C++ console application for managing student records, built using core Object-Oriented Programming (OOP) principles as a university project.
+A C++ console application for managing student records, built as a university OOP project. Features role-based access (Admin / Student), inheritance-based student types, and persistent file storage.
 
 ## Features
-- Add a new student record (ID, name, age, course)
-- Display all stored student records
-- Search for a student by ID
-- Menu-driven console interface
+- **Login system** with separate Admin and Student roles
+- **Admin**: add, view, search, edit, and delete student records
+- **Student**: view all records and search by ID (read-only access)
+- **Two student types** — Undergraduate (tracks semester) and Graduate (tracks thesis topic) — both derived from a common `Student` base class
+- **Persistent storage** — records are saved to and loaded from `students.txt`
 
-## Concepts Used
-- **Encapsulation** — student data and behavior are bundled inside the `Student` class
-- **Abstraction** — users interact with simple menu options without needing to know how data is stored internally
-- **Modularity** — separated into `Student` and `StudentManagement` classes for cleaner structure
-- **Dynamic data storage** — uses `std::vector` to store an unlimited number of student records
+## OOP Concepts Used
+- **Inheritance** — `Admin` and `Student` inherit from `User`; `Undergraduate` and `Graduate` inherit from `Student`
+- **Polymorphism** — `display()` is a virtual method overridden at each level of the hierarchy, so the correct details print based on the actual object type
+- **Encapsulation** — the `Record` class keeps student data and file I/O logic private, exposing only clean public methods (add, edit, delete, search)
+- **Abstraction** — users interact through simple numbered menus without needing to know how data is stored or searched internally
+- **Dynamic memory management** — student records are stored as `Student*` pointers, allocated with `new` and properly cleaned up with `delete` in the destructor
+
+## Class Diagram
+```
+                SRMS
+               /    \
+          User        Record
+         /    \
+     Admin    Student
+                /   \
+        Graduate   Undergraduate
+```
+`SRMS` has-a `User` (composition) and has-a `Record` (composition). `Admin` and `Student` inherit from `User`. `Graduate` and `Undergraduate` inherit from `Student`.
 
 ## Tech Stack
-- C++ (Standard Library: `<iostream>`, `<vector>`, `<string>`)
+- C++ (Standard Library: `<iostream>`, `<fstream>`, `<string>`)
 
 ## How to Run
 1. Clone the repository:
@@ -25,19 +39,25 @@ A simple C++ console application for managing student records, built using core 
    ```
 2. Compile the code:
    ```
-   g++ main.cpp -o student_management
+   g++ main.cpp -o srms
    ```
 3. Run it:
    ```
-   ./student_management
+   ./srms
    ```
-   (On Windows: `student_management.exe`)
+   (On Windows: `srms.exe`)
+
+## Demo Credentials
+| Role    | Username  | Password     |
+|---------|-----------|--------------|
+| Admin   | admin     | admin123     |
+| Student | student   | student123   |
 
 ## Possible Future Enhancements
-- Edit/update existing student details
-- Delete a student record
-- Save/load records to a file for persistent storage
-- Sort or filter students by name, age, or course
+- Hash passwords instead of storing them in plain text
+- Input validation for menu choices and student type selection
+- Sort/filter students by name, age, or course
+- Save/restore Undergraduate/Graduate-specific fields (semester, thesis topic) to file (currently only base fields persist)
 
 ## Contributors
 - Syeda Malika Zahra
